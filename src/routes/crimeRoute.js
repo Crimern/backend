@@ -40,7 +40,7 @@ export default (app, database) => {
   app.router.post("/api/crime/radius", async (ctx) => {
     try {
       const body = JSON.parse(ctx.request.body)
-      const data = await crimeService.fetchInRadius(body.x,body.y)
+      const data = await crimeService.fetchInRadius(body.lng,body.lat)
       
       ctx.body = {
         success: true,

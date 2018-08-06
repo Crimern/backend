@@ -6,8 +6,17 @@ export default (mongoose) => {
   
 
   const crime = new Schema({
-    x: { type:  mongoose.Schema.Types.BigDecimal, required: true},
-    y: { type:  mongoose.Schema.Types.BigDecimal, required: true },
+    location: {
+      type: {
+        type: String,
+        enum: ['Point'],
+        required: true
+      },
+      coordinates: {
+        type: [Number],
+        required:true
+      }
+    },
     date: { type: Date, required: true },
     type : {type: mongoose.Schema.Types.ObjectId, ref: 'CrimeType' },
     created_at: Date,
