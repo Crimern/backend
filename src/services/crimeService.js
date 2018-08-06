@@ -10,8 +10,10 @@ export default (database) => {
         });
 
         let data = new Crime({
-          x,
-          y,
+          location: {
+            type: 'Point',
+            coordinates: [x, y]
+          },
           date: new Date(date),
           type: crimeTypeId._id
         })
@@ -35,13 +37,18 @@ export default (database) => {
       }
     },
 
-    async fetchInRadius(x, y, zoom) {
+    async fetchInRadius(lng, lat) {
       try {
-        const data = await Crime.find({}).populate('type')
-        const radius = 1;
-        return data.filter(el => {
-          return (Math.sqrt(Math.pow((el.x - x),2) + Math.pow((el.y - y),2)) < radius)
-        })
+        console.log(lng, lat)
+        const data = await Crime.find({
+          location: {
+            $geoWithin: {
+              $centerSphere: [[lng, lat],
+              100 / 3963.2]
+            }
+          }
+        }).populate('type')
+        return data;
       } catch (error) {
         throw error;
       }
