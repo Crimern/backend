@@ -39,7 +39,6 @@ export default (database) => {
 
     async fetchInRadius(lng, lat) {
       try {
-        console.log(lng, lat)
         const data = await Crime.find({
           location: {
             $geoWithin: {
