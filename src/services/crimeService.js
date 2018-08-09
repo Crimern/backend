@@ -37,15 +37,16 @@ export default (database) => {
       }
     },
 
-    async fetchInRadius(lng, lat) {
+    async fetchInRadius({lng, lat, types}) {
       try {
         const data = await Crime.find({
           location: {
             $geoWithin: {
               $centerSphere: [[lng, lat],
-              100 / 3963.2]
+              100 / 6371.008]
             }
-          }
+          },
+          type: { $in: types }
         }).populate('type')
         return data;
       } catch (error) {

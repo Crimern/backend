@@ -15,7 +15,16 @@ export default (database) => {
       } catch (error) {
         throw error;
       }
+    },
 
+    async fetchAll() {
+      try {
+        const data = await CrimeType.find({})
+
+        return data;
+      } catch(error) {
+        throw error;
+      }
     }
   }
 }

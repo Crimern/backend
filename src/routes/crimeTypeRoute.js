@@ -5,7 +5,6 @@ export default (app, database) => {
   const crimeTypeService = CrimeTypeService(database)
 
   app.router.post("/api/crimeType", async (ctx) => {
-
     try {
       const data = await crimeTypeService.create(ctx.request.body)
       
@@ -20,5 +19,21 @@ export default (app, database) => {
       }
     }
     
+  })
+
+  app.router.get("/api/crimeType", async (ctx) => {
+    try {
+      const data = await crimeTypeService.fetchAll()
+      
+      ctx.body = {
+        success: true,
+        data: data
+      }
+    } catch(error) {
+      ctx.body = {
+        success: false,
+        error: error.message
+      }
+    }
   })
 }
