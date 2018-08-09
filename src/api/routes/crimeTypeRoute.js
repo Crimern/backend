@@ -1,12 +1,19 @@
 import config from "config";
 import CrimeTypeService from "../services/crimeTypeService";
+import controller, {get,post} from "inra-server-http/dest/router";
 
-export default (app, database) => {
-  const crimeTypeService = CrimeTypeService(database)
+@controller('/api')
+export default class CrimeTypeRouter {
+  constructor(dependencies) {
+    this.database = dependencies.database;
 
-  app.router.post("/api/crimeType", async (ctx) => {
+    this.crimeTypeService = CrimeTypeService(this.database)
+  }
+
+  @post('/crimeType')
+  async create(ctx) {
     try {
-      const data = await crimeTypeService.create(ctx.request.body)
+      const data = await this.crimeTypeService.create(ctx.request.body)
       
       ctx.body = {
         success: true,
@@ -18,10 +25,10 @@ export default (app, database) => {
         error: error.message
       }
     }
-    
-  })
+  }
 
-  app.router.get("/api/crimeType", async (ctx) => {
+  @get('/crimeType')
+  async fetchAll(ctx) {
     try {
       const data = await crimeTypeService.fetchAll()
       
@@ -35,5 +42,5 @@ export default (app, database) => {
         error: error.message
       }
     }
-  })
+  }
 }

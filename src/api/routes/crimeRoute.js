@@ -1,14 +1,21 @@
 import config from "config";
+import controller, {get,post} from "inra-server-http/dest/router";
 import CrimeService from "../services/crimeService";
 
-export default (app, database) => {
-  const {Crime} = database.models;
-  const crimeService = CrimeService(database)
 
-  app.router.post("/api/crime", async (ctx) => {
-    const {geoCoord,date, crimeType} = ctx.request.body;
+@controller('/api')
+export default class CrimeRouter {
+  constructor(dependencies) {
+    this.database = dependencies.database;
+
+    this.crimeService = CrimeService(this.database)
+  }
+
+
+  @post('/crime')
+  async create(ctx) {
     try {
-      const data = await crimeService.create(ctx.request.body)
+      const data = await this.crimeService.create(ctx.request.body)
       ctx.body = {
         success: true,
         data: data
@@ -19,11 +26,12 @@ export default (app, database) => {
         error: error
       }
     }
-  })
+  }
 
-  app.router.get("/api/crime", async (ctx) => {
+  @get('/crime')
+  async fetch(ctx) {
     try {
-      const data = await crimeService.fetchAll()
+      const data = await this.crimeService.fetchAll()
       
       ctx.body = {
         success: true,
@@ -35,11 +43,12 @@ export default (app, database) => {
         error: error
       }
     }
-  })
+  }
 
-  app.router.post("/api/crime/radius", async (ctx) => {
+  @post('/crime/radius')
+  async fetchInRadius(ctx) {
     try {
-      const data = await crimeService.fetchInRadius(ctx.request.body)
+      const data = await this.crimeService.fetchInRadius(ctx.request.body)
       
       ctx.body = {
         success: true,
@@ -51,5 +60,6 @@ export default (app, database) => {
         error: error.message
       }
     }
-  })
+  }
+
 }
