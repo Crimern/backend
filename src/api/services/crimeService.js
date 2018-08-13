@@ -3,7 +3,7 @@ export default (database) => {
   const { Crime, CrimeType } = database.models;
 
   return {
-    async create({ x, y, date, crimeType }) {
+    async create({ lng, lat, date, crimeType }) {
       try {
         const crimeTypeId = await CrimeType.findOne({
           name: crimeType
@@ -12,7 +12,7 @@ export default (database) => {
         let data = new Crime({
           location: {
             type: 'Point',
-            coordinates: [x, y]
+            coordinates: [lng, lat]
           },
           date: new Date(date),
           type: crimeTypeId._id

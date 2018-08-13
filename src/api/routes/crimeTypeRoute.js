@@ -29,18 +29,11 @@ export default class CrimeTypeRouter {
 
   @get('/crimeType')
   async fetchAll(ctx) {
-    try {
-      const data = await crimeTypeService.fetchAll()
+      const data = await this.crimeTypeService.fetchAll()
       
       ctx.body = {
         success: true,
         data: data
       }
-    } catch(error) {
-      ctx.body = {
-        success: false,
-        error: error.message
-      }
-    }
   }
 }
