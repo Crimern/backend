@@ -60,8 +60,8 @@ export default class CrimeRouter {
 */
   @post('/crime/radius')
   async fetchInRadius(ctx) {
-    const data = await this.crimeService.fetchInRadi  us(JSON.parse(ctx.request.body))
-
+    const data = await this.crimeService.fetchInRadius(JSON.parse(ctx.request.body))
+    
     ctx.body = {
       success: true,
       data: data

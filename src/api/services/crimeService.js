@@ -48,6 +48,7 @@ export default (database) => {
           },
           type: { $in: types }
         }).populate('type')
+        
         return data;
       } catch (error) {
         throw error;
